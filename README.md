@@ -55,4 +55,5 @@ I build custom AI solutions and real-time vision systems. \
 
 ## LICENSE
 This project is open for review and demonstration purposes only. \
-All source code rights are reserved by the author.
+All source code rights are reserved by the author. \
+(Source code is currently private. If you’re interested in this project or want to collaborate, feel free to contact me.)
