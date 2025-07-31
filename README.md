@@ -36,6 +36,26 @@ Create a system that allows **hands-only control** of video games using a webcam
 *To be added — planned gameplay demo controlled via webcam gestures.*
 
 ---
+## ✅ Testing
+
+This project includes unit tests to ensure core functionalities like gesture detection and system actions are working correctly.
+
+### What is tested?
+
+- Pinch gesture detection and open-palm logic (`gestures.py`)
+- Mouse movement conversion and click simulation (`mouse_control.py`)
+- Keyboard press actions (`keyboard_control.py`)
+- Gesture-to-action mapping logic (`controller.py`)
+
+### How to run tests locally
+
+Make sure you have `pytest` installed*
+
+```bash
+pytest -v
+```
+
+---
 
 ## What I Learned
 
