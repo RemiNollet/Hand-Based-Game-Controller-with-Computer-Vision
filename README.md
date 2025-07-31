@@ -24,7 +24,7 @@ Create a system that allows **hands-only control** of video games using a webcam
 | Feature                         | Description                                                 |
 |----------------------------------|-------------------------------------------------------------|
 | 🖐️ Hand Detection               | Detect hands and 21 landmarks using Mediapipe               |
-| 🖱️ Mouse Control               | Move mouse with the index finger tip                       |
+| 🖱️ Mouse Control               | Move mouse with the right hand                      |
 | 👌 Gesture-to-Click Mapping     | Pinch gesture (thumb + index) → right click                |
 | ⌨️ Keyboard Trigger via Gestures| Left hand performs static gestures to simulate keypresses  |
 
@@ -41,7 +41,7 @@ Create a system that allows **hands-only control** of video games using a webcam
 
 - Real-time computer vision pipeline with webcam
 - Precision challenges in gesture recognition
-- Gesture design for input simulation (false positive/negative handling)
+- Gesture design for input simulation
 - Use cases of Mediapipe for creative interfaces
 - Limitations and latency in controlling fast-paced games via vision
 
@@ -56,4 +56,3 @@ I build custom AI solutions and real-time vision systems. \
 ## LICENSE
 This project is open for review and demonstration purposes only. \
 All source code rights are reserved by the author. \
-(Source code is currently private. If you’re interested in this project or want to collaborate, feel free to contact me.)

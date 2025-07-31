@@ -10,11 +10,10 @@ def move_mouse(mouse: Controller, landmarks, screen_width=1440, screen_height=90
         screen_width (int): Optional, screen width in pixels.
         screen_height (int): Optional, screen height in pixels.
     """
-    if len(landmarks) != 21:
-        return
 
-    wirst = landmarks[0]
-    x_norm, y_norm = wirst[0], wirst[1]
+    core_points = [landmarks[i] for i in [0, 5, 9, 13, 17]]
+    x_norm = sum(p[0] for p in core_points) / len(core_points)
+    y_norm = sum(p[1] for p in core_points) / len(core_points)
 
     # Convert normalized coordinates to screen position
     x_pixel = int((1 - x_norm) * screen_width)  # flip X horizontally

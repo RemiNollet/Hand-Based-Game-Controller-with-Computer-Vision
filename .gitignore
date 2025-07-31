@@ -208,3 +208,5 @@ __marimo__/
 
 # Fichier mac
 .DS_Store
+
+hand_gesture_log.txt

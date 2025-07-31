@@ -12,7 +12,7 @@ from pynput.mouse import  Controller as mouse_Controller
 from pynput.keyboard import Controller as kb_Controller
 
 from handvr.landmarks_detector import HandDetector
-from handvr import gestures
+from handvr import gestures, config, controller
 from handvr import mouse_control, keyboard_control
 
 # ---------- Logger setup ----------
@@ -30,7 +30,7 @@ def main():
     mouse = mouse_Controller()
     keyboard = kb_Controller()
 
-    print("[INFO] Starting webcam. Press 'q' to exit.")
+    print("[INFO] Starting webcam. Press 'p' to exit.")
 
     while True:
         ret, frame = cap.read()
@@ -50,60 +50,20 @@ def main():
                 # Mouse position control
                 mouse_control.move_mouse(mouse, landmarks_right, screen_width=1440, screen_height=900)
 
-                # --- Right hand gestures ---
-                if gestures.is_pinch(landmarks_right, finger=2):
-                    cv2.putText(frame, "Pinch Index right hand (Right Click)", (10, 70),
-                                cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 0), 2)
-                    mouse_control.right_click(mouse)
-                    logger.info("Right hand: pinch index → right click")
-
-                elif gestures.is_pinch(landmarks_right, finger=3):
-                    cv2.putText(frame, "Pinch Middle right hand (Press D)", (10, 100),
-                                cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
-                    keyboard_control.press_key(keyboard, 'd')
-                    logger.info("Right hand: pinch middle → (D)")
-
-                elif gestures.is_pinch(landmarks_right, finger=4):
-                    cv2.putText(frame, "Pinch Ring right hand (Press F)", (10, 130),
-                                cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 255), 2)
-                    keyboard_control.press_key(keyboard, 'f')
-                    logger.info("Right hand: pinch ring → (F)")
-
-                elif gestures.is_pinch(landmarks_right, finger=5):
-                    cv2.putText(frame, "Pinch Pinky right hand (Left Click)", (10, 160),
-                                cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 255), 2)
-                    mouse_control.left_click(mouse)
-                    logger.info("Right hand: pinch pinky → left click")
-
-                # --- Left hand gestures ---
-                if gestures.is_pinch(landmarks_left, finger=2):
-                    cv2.putText(frame, "Pinch Index left hand (Press q)", (1000, 70),
-                                cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 0), 2)
-                    keyboard_control.press_key(keyboard, 'q')
-                    logger.info("Left hand: pinch index → Q")
-
-                elif gestures.is_pinch(landmarks_left, finger=3):
-                    cv2.putText(frame, "Pinch Middle left hand (Press W)", (1000, 100),
-                                cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
-                    keyboard_control.press_key(keyboard, 'w')
-                    logger.info("Left hand: pinch middle → W")
-
-                elif gestures.is_pinch(landmarks_left, finger=4):
-                    cv2.putText(frame, "Pinch Ring left hand (Press E)", (1000, 130),
-                                cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 255), 2)
-                    keyboard_control.press_key(keyboard, 'e')
-                    logger.info("Left hand: pinch ring → E")
-
-                elif gestures.is_pinch(landmarks_left, finger=5):
-                    cv2.putText(frame, "Pinch Pinky left hand (Press R)", (1000, 160),
-                                cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 255), 2)
-                    keyboard_control.press_key(keyboard, 'r')
-                    logger.info("Left hand: pinch pinky → R")
+                for hand_label, landmarks in [("right", landmarks_right), ("left", landmarks_left)]:
+                    for finger in range(2, 6):  # Index to pinky
+                        if gestures.is_pinch(landmarks, finger=finger, threshold=config.PINCH_THRESHOLD):
+                            x = 10 if hand_label == "right" else 800
+                            y = 60 + 30 * (finger - 2)
+                            cv2.putText(frame, f"Pinch {finger} ({hand_label})", (x, y),
+                                        cv2.FONT_HERSHEY_SIMPLEX, 0.8, (200, 0, 0), 2)
+                            gesture_key = f"{hand_label}_{finger}"
+                            controller.execute_gesture(gesture_key, mouse, keyboard, logger)
 
         cv2.imshow("Hand Tracking", frame)
 
         key = cv2.waitKey(1)
-        if key == ord('q'):
+        if key == ord('l'):
             break
 
     cap.release()
