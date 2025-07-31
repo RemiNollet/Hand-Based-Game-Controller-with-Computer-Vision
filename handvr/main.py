@@ -55,12 +55,12 @@ def main():
                         if gestures.is_pinch(landmarks, finger=finger, threshold=config.PINCH_THRESHOLD):
                             x = 10 if hand_label == "right" else 800
                             y = 60 + 30 * (finger - 2)
-                            cv2.putText(frame, f"Pinch {finger} ({hand_label})", (x, y),
-                                        cv2.FONT_HERSHEY_SIMPLEX, 0.8, (200, 0, 0), 2)
+                            # cv2.putText(frame, f"Pinch {finger} ({hand_label})", (x, y),
+                                        # cv2.FONT_HERSHEY_SIMPLEX, 0.8, (200, 0, 0), 2)
                             gesture_key = f"{hand_label}_{finger}"
                             controller.execute_gesture(gesture_key, mouse, keyboard, logger)
 
-        cv2.imshow("Hand Tracking", frame)
+        # cv2.imshow("Hand Tracking", frame)
 
         key = cv2.waitKey(1)
         if key == ord('l'):
